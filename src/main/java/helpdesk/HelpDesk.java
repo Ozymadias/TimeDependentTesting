@@ -4,11 +4,15 @@ import issue.Issue;
 
 import java.util.Calendar;
 
-public class HelpDesk {
-    public static final int EOB_HOR = 17;
+class HelpDesk {
+    private static final int EOB_HOR = 17;
+    private Calendar calendar;
 
-    public boolean willHandleIssue(Issue issue) {
-        Calendar calendar = Calendar.getInstance();
+    HelpDesk(Calendar calendar) {
+        this.calendar = calendar;
+    }
+
+    boolean willHandleIssue(Issue issue) {
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         if (Calendar.SUNDAY == dayOfWeek || Calendar.SATURDAY == dayOfWeek)
             return false;
