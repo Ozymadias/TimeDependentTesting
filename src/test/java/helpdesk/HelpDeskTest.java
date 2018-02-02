@@ -6,6 +6,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.mockito.Mockito.mock;
@@ -52,17 +53,16 @@ public class HelpDeskTest {
     }
 
     private List<Object[]> cartesianProduct(int day, int[] hours) {
-        List<Object[]> list = new ArrayList<>();
-        for (Object hour: hours)
-            list.add(new Object[]{day, hour});
-        return list;
+        return Arrays.stream(hours)
+                .mapToObj(hour -> new Object[]{day, hour})
+                .collect(Collectors.toList());
     }
 
     private List<Object[]> cartesianProduct(int[] days, int[] hours) {
-        List<Object[]> list = new ArrayList<>();
-        for (int day: days)
-            list.addAll(cartesianProduct(day, hours));
-        return list;
+        return Arrays.stream(days)
+                .mapToObj(day -> cartesianProduct(day, hours))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     @DataProvider
